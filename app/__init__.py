@@ -15,6 +15,8 @@ def create_app():
     db.init_app(app)
 
     with app.app_context():
+        from .exceptions import exceptions_blueprint
+        app.register_blueprint(exceptions_blueprint)
         from .routes import api_blueprint
         app.register_blueprint(api_blueprint, url_prefix="/api")
         db.create_all()

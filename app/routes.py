@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 
 from app import db
+from .exceptions import EvaluationError, RequiredParameterError
 from .models import Polynomial
 from .utils import eval_poly
 
@@ -25,17 +26,18 @@ def add_polynomial():
 def evaluate_polynomial():
     polynomial_id = request.args.get('polynomial_id')
     if not polynomial_id:
-        return {'error': 'Parameter `polynomial_id` is required.'}
+        raise RequiredParameterError('Parameter `polynomial_id` is required.')
     x = request.args.get('x')
     if not x:
-        return {'error': 'Parameter `x` is required.'}
+        raise RequiredParameterError('Parameter `x` is required.')
     y = request.args.get('y')
     if not y:
-        return {'error': 'Parameter `y` is required.'}
+        raise RequiredParameterError('Parameter `y` is required.')
+
     polynomial = Polynomial.query.get(polynomial_id)
 
     try:
         result = eval_poly(polynomial.expression, x, y)
     except SyntaxError:
-        return {'error': 'Expression cannot be evaluated. Only x and y variables are allowed.'}, 400
+        raise EvaluationError('Expression cannot be evaluated. Only x and y variables are allowed.')
     return jsonify(expression=polynomial.expression, value=result)

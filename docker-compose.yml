@@ -1,0 +1,13 @@
+version: "3.5"
+
+services:
+  web:
+    build: .
+    command: ["flask", "run", "--host=0.0.0.0"]
+    volumes:
+      - sqlite-data:/app/data
+    ports:
+      - "5000:5000"
+
+volumes:
+  sqlite-data:

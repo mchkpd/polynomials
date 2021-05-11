@@ -1,0 +1,8 @@
+flask
+flask-migrate
+flask-sqlalchemy
+marshmallow
+marshmallow-sqlalchemy
+pytest
+python-dotenv
+sqlalchemy

@@ -12,7 +12,7 @@ api_blueprint = Blueprint('api_blueprint', __name__)
 def add_polynomial():
     expression = request.json.get('expression')
     if not expression:
-        return {'error': 'Parameter `expression` is required.'}
+        raise RequiredParameterError('Parameter `expression` is required.')
 
     polynomial = Polynomial(
         expression=expression,
